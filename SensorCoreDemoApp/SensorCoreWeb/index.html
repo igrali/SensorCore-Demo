@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+        <title>SensorCoreWeb</title>
+        <style type="text/css">
+            body {
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 300;
+              }
+
+            .container {
+                background-color: #aad6fb;
+                border: thin solid #808080;
+                padding: 20px;
+                margin: 20px;
+            }
+
+            h1, h2 {
+                display:inline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <p>
+                <h1>Hello, this is my SensorCore demo</h1>
+            </p>
+            <div>
+                <h2>Walking step count:</h2>
+                <h2 id="walkingStepCount" />
+            </div>
+            <div>
+                <h2>Running step count:</h2>
+                <h2 id="runningStepCount" />
+            </div>
+            <div>
+                <h2>Activity:</h2>
+                <h2 id="activity" />
+            </div>
+        </div>
+        <script src="Scripts/jquery-1.6.4.min.js"></script>
+        <script src="Scripts/jquery.signalR-2.1.1.min.js"></script>
+        <script src="signalr/hubs"></script>
+        <script type="text/javascript">
+            $(function () {
+                // Declare a proxy to reference the hub.
+                var sensorCore = $.connection.sensorCoreHub;
+
+                // Create a function that the hub can call to broadcast messages.
+                sensorCore.client.broadcastMessage = function (walkingSteps, runningSteps, activity) {
+                    $('#walkingStepCount').text(walkingSteps);
+                    $('#runningStepCount').text(runningSteps);
+                    $('#activity').text(activity);
+            };
+
+            // Start the connection.
+            $.connection.hub.start();
+            });
+        </script>
+    </body>
+</html>
